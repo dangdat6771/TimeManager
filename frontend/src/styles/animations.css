@@ -1,0 +1,180 @@
+/* ============================================
+   TIMEMANAGER – ANIMATIONS
+   ============================================ */
+
+/* ── Keyframes ── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes scaleInBounce {
+  from { opacity: 0; transform: scale(0.8); }
+  60%  { transform: scale(1.04); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(108,99,255,0.3); }
+  50%       { box-shadow: 0 0 40px rgba(108,99,255,0.6); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes timerPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.02); }
+}
+
+@keyframes progressFill {
+  from { stroke-dashoffset: 440; }
+}
+
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toastSlideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(110%); }
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes streakFlame {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%       { transform: scale(1.1) rotate(2deg); }
+}
+
+/* ── Utility Animation Classes ── */
+.animate-fade-in     { animation: fadeIn     0.3s ease forwards; }
+.animate-fade-in-up  { animation: fadeInUp   0.4s ease forwards; }
+.animate-fade-in-down{ animation: fadeInDown 0.3s ease forwards; }
+.animate-scale-in    { animation: scaleIn    0.3s ease forwards; }
+.animate-slide-left  { animation: slideInLeft 0.35s ease forwards; }
+.animate-slide-right { animation: slideInRight 0.35s ease forwards; }
+.animate-float       { animation: float 3s ease-in-out infinite; }
+.animate-pulse       { animation: pulse 2s ease-in-out infinite; }
+.animate-glow        { animation: glow 2s ease-in-out infinite; }
+
+/* Stagger children */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.4s ease forwards;
+}
+.stagger-children > *:nth-child(1)  { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2)  { animation-delay: 0.10s; }
+.stagger-children > *:nth-child(3)  { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4)  { animation-delay: 0.20s; }
+.stagger-children > *:nth-child(5)  { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6)  { animation-delay: 0.30s; }
+.stagger-children > *:nth-child(7)  { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8)  { animation-delay: 0.40s; }
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Page transitions */
+.page-enter {
+  animation: fadeInUp 0.35s ease forwards;
+}
+
+/* Auth shapes float */
+.auth-shape-1 { animation: float 8s ease-in-out infinite; }
+.auth-shape-2 { animation: float 10s ease-in-out infinite reverse; }
+.auth-shape-3 { animation: float 6s ease-in-out infinite 1s; }
+
+/* Timer ring */
+.timer-ring {
+  animation: progressFill 0.5s ease-out;
+}
+.timer-active {
+  animation: timerPulse 3s ease-in-out infinite;
+}
+
+/* Streak flame */
+.streak-flame {
+  display: inline-block;
+  animation: streakFlame 1.5s ease-in-out infinite;
+}
+
+/* Habit check bounce */
+.habit-check-animate {
+  animation: scaleInBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Nav item ripple */
+.nav-item {
+  position: relative;
+  overflow: hidden;
+}
+.nav-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(108,99,255,0.08);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+.nav-item:hover::after { opacity: 1; }

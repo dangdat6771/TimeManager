@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: timemanager-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: time_manager
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d time_manager"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: timemanager-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/time_manager
+      JWT_ACCESS_SECRET: timemanager_access_secret_change_me
+      JWT_REFRESH_SECRET: timemanager_refresh_secret_change_me
+      ACCESS_TOKEN_EXPIRES_IN: 15m
+      REFRESH_TOKEN_EXPIRES_IN_DAYS: 30
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "3000:3000"
+    command: sh -c "npm run db:migrate && npm start"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: timemanager-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "5173:80"
+
+volumes:
+  postgres-data:
